@@ -1,0 +1,19 @@
+﻿
+Todo
+-------------
+
+Create an option that disables the ability to hold down keys and it register and multiple key
+presses.
+
+
+-------------
+
+
+Bugs
+-------------
+
+If you have a low framerate selected and hold down the left or right arrow key on the paddle
+it will produce graphical glitches.
+
+
+-------------

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A2141AE-3FDA-455B-B1A4-F154B2165AF2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BlockBreaker</RootNamespace>
+    <AssemblyName>BlockBreaker</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>bbicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EndGame\EndGamePortrait.cs" />
+    <Compile Include="EnterName\EnterNamePortrait.cs" />
+    <Compile Include="Game\GamePortrait.cs" />
+    <Compile Include="Game\Resources\Vector.cs" />
+    <Compile Include="Renderables\Ball.cs" />
+    <Compile Include="Renderables\Block.cs" />
+    <Compile Include="Renderables\Paddle.cs" />
+    <Compile Include="Resources\BallMovedEventArgs.cs" />
+    <Compile Include="Resources\ScoreEventArgs.cs" />
+    <Compile Include="Highscores\HighscoresPortrait.cs" />
+    <Compile Include="Highscores\Interfaces\IScoreGrabber.cs" />
+    <Compile Include="Highscores\Interfaces\IScoreWriter.cs" />
+    <Compile Include="Highscores\Resources\Score.cs" />
+    <Compile Include="Highscores\ScoreGrabber\XMLScoreGrabber.cs" />
+    <Compile Include="Highscores\ScoreWriter\XMLScoreWriter.cs" />
+    <Compile Include="MainMenu\MenuPortrait.cs" />
+    <Compile Include="Renderables\AsciiTitle.cs" />
+    <Compile Include="Renderables\MenuOption\MenuOption.cs" />
+    <Compile Include="Renderables\MenuOption\OptionName.cs" />
+    <Compile Include="Resources\PageHandles.cs" />
+    <Compile Include="Resources\ResourceManager.cs" />
+    <Compile Include="Run.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DaVinci-Framework\DaVinci-Framework.csproj">
+      <Project>{623e6755-36fa-41ff-b5c0-3c0eaa1205c7}</Project>
+      <Name>DaVinci-Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bbicon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
