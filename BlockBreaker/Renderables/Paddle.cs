@@ -3,6 +3,7 @@ using BlockBreaker.Resources;
 using DaVinci_Framework.Renderer.Resources;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,19 +75,27 @@ namespace BlockBreaker.Renderables
             {
                 if (ballPosition[0] >= _position[0] && ballPosition[0] <= (_position[0] + 6))
                 {
-                    if (ballPosition[1] >= _position[1] && ballPosition[1] <= _position[1] + 1.0)
+                    if (ballPosition[1] >= _position[1] - 1.0 && ballPosition[1] <= _position[1] + 1.0)
                     {
                         _changed = true;
                         var changeMap = new double[] { -0.4, -0.2, 0, 0, 0.2, 0.4 };
 
                         var mapIndex = (int)Math.Floor(ballPosition[0] - _position[0]);
 
-                        source.Direction = new Vector(source.Direction.XComponent + changeMap[mapIndex], -source.Direction.YComponent);
+                        try
+                        {
+                            source.Direction = new Vector(source.Direction.XComponent + changeMap[mapIndex],
+                                -source.Direction.YComponent);
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            source.Direction = new Vector(source.Direction.XComponent, -source.Direction.YComponent);
+                            Debug.Print("Caught Exception : IndexOutOfRange in Paddle Collision");
+                        }
 
                         _canColide = false;
 
-                        var collideTimer = new System.Timers.Timer(200);
-                        collideTimer.Enabled = true;
+                        var collideTimer = new System.Timers.Timer(200) {Enabled = true};
                         collideTimer.Elapsed += OnTimedEvent;
                         collideTimer.Start();
                     }

@@ -24,6 +24,10 @@ namespace BlockBreaker.Renderables.MenuOption
                     _option = OptionName.Play;
                     break;
 
+                case "Instructions":
+                    _option = OptionName.Instructions;
+                    break;
+
                 case "Options":
                     _option = OptionName.Options;
                     break;

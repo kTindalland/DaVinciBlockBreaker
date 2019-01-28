@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlockBreaker.Highscores.Interfaces;
 using BlockBreaker.Resources;
 using DaVinci_Framework.DefaultRenderables;
 using DaVinci_Framework.KeyGetterThread;
@@ -13,17 +14,20 @@ namespace BlockBreaker.EndGame
 {
     public class EndGamePortrait : Portrait
     {
+        private IScoreWriter _scoreWriter;
+        
 
-        public EndGamePortrait()
+        public EndGamePortrait(IScoreWriter scoreWriter)
         {
             _register = new Register();
+            _scoreWriter = scoreWriter;
         }
 
         public override void SelectThisPortrait()
         {
             base.SelectThisPortrait();
-
-            //_register = new Register();
+            _register.UnRegisterAllItems();
+            
             if (ResourceManager.GameWon)
             {
                 FillRegisterWinner();
@@ -43,7 +47,7 @@ namespace BlockBreaker.EndGame
             var title = new Text(text, ConsoleColor.Green, new double[] {(Console.WindowWidth / 2) - (text.Length / 2), 12});
             _register.RegisterItem(title);
 
-            /*var para = new string[]
+            var para = new string[]
             {
                 "Your score WILL be added to the highscores",
                 "Well done, but can you do better?"
@@ -52,7 +56,10 @@ namespace BlockBreaker.EndGame
             for (int i = 0; i < para.Length; i++)
             {
                 _register.RegisterItem(new Text(para[i], ConsoleColor.White, new double[] { (Console.WindowWidth / 2) - (para[i].Length / 2), 13 + i }));
-            }*/
+            }
+
+
+            _scoreWriter.AppendScore(ResourceManager.PlayerDetails, ResourceManager.HighscoresPath);
 
             _register.Refresh();
         }

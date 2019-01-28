@@ -58,6 +58,8 @@ namespace DaVinci_Framework.Renderer
             //Console.Clear();
 
             var itemsToRender = _currentRegister.GetChangedItems(); // Gets a list of items that have changed since last render.
+            var deletedItems = _currentRegister.GetDeletedItems();
+            
 
             foreach (var item in itemsToRender) // Go through each changed item
             {
@@ -66,12 +68,12 @@ namespace DaVinci_Framework.Renderer
                 _screen.AddToScreen(new int[] { (int)Math.Floor(item.StartingLocation()[0]), (int)Math.Floor(item.StartingLocation()[1]) }, item.ItemPixels()); // Draw the item in the new position
             }
 
-            var deletedItems = _currentRegister.GetDeletedItems();
-
             foreach (var item in deletedItems)
             {
                 _screen.AddToScreen(new int[] { (int)Math.Floor(item.StartingLocation()[0]), (int)Math.Floor(item.StartingLocation()[1]) }, item.ItemPixels(true)); // Clear where the item used to be.
             }
+
+
 
             return _screen; // Return the new screen object
         }

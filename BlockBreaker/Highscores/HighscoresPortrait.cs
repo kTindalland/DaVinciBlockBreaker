@@ -7,6 +7,7 @@ using DaVinci_Framework.PortraitManager.Resources;
 using DaVinci_Framework.Renderer.Resources;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BlockBreaker.Highscores
 {
@@ -33,6 +34,7 @@ namespace BlockBreaker.Highscores
             var scoreReader = new XMLScoreGrabber(); // Create scoregrabber
 
             _scores = scoreReader.ReadScores(path, 10); // Get the first ten scores
+            _scores = _scores.OrderByDescending(x => x.HighScore).ToList<Score>();
         }
 
         private void FillRegister()

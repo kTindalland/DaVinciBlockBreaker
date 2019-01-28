@@ -15,6 +15,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BlockBreaker.EndGame;
+using BlockBreaker.Highscores.ScoreGrabber;
+using BlockBreaker.Highscores.ScoreWriter;
+using BlockBreaker.Instructions;
 
 namespace BlockBreaker
 {
@@ -29,6 +32,12 @@ namespace BlockBreaker
             Console.CursorVisible = false; // Hide the cursor
             Console.Title = "BlockBreaker"; // Set the title of the console window
 
+            // Setup filepath to highscores
+            ResourceManager.HighscoresPath = AppDomain.CurrentDomain.BaseDirectory;
+            ResourceManager.HighscoresPath += "../../highscores.xml";
+
+            // Create score handlers
+            var scorewriter = new XMLScoreWriter();
 
             var renderer = new Renderer(new Register());
             var display = new Display();
@@ -38,7 +47,8 @@ namespace BlockBreaker
             var highscores = new HighscoresPortrait();
             var enterName = new EnterNamePortrait();
             var mainGame = new GamePortrait();
-            var endGame = new EndGamePortrait();
+            var endGame = new EndGamePortrait(scorewriter);
+            var instructions = new InstructionsPortrait();
 
             // Assign keypress events
             keyListener.KeyGot += mainMenu.OnKeyPress;
@@ -46,6 +56,7 @@ namespace BlockBreaker
             keyListener.KeyGot += enterName.OnKeyPress;
             keyListener.KeyGot += mainGame.OnKeyPress;
             keyListener.KeyGot += endGame.OnKeyPress;
+            keyListener.KeyGot += instructions.OnKeyPress;
 
             // Set up manager
             var portraitManager = new Manager(renderer, display, (int)PageHandles.MainMenu, mainMenu);
@@ -53,6 +64,7 @@ namespace BlockBreaker
             portraitManager.AddPortrait((int)PageHandles.GiveName, enterName);
             portraitManager.AddPortrait((int)PageHandles.MainGame, mainGame);
             portraitManager.AddPortrait((int)PageHandles.EndGame, endGame);
+            portraitManager.AddPortrait((int)PageHandles.Instructions, instructions);
 
             while (true)
             {

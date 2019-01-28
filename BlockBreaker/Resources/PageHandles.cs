@@ -13,6 +13,7 @@ namespace BlockBreaker.Resources
         Options,
         GiveName,
         MainGame,
-        EndGame
+        EndGame,
+        Instructions
     }
 }

@@ -1,22 +1,23 @@
-﻿using BlockBreaker.Renderables;
+﻿using System;
+using System.Collections.Generic;
+using System.Timers;
+using BlockBreaker.Renderables;
 using BlockBreaker.Renderables.MenuOption;
 using BlockBreaker.Resources;
 using DaVinci_Framework.DefaultRenderables;
 using DaVinci_Framework.KeyGetterThread;
 using DaVinci_Framework.PortraitManager.Resources;
 using DaVinci_Framework.Renderer.Resources;
-using System;
-using System.Collections.Generic;
 
 namespace BlockBreaker.MainMenu
 {
     public class MenuPortrait : Portrait
     {
         private AsciiTitle _title; // The ascii title
-        private System.Timers.Timer _colTimer; // The colour timer
+        private Timer _colTimer; // The colour timer
         private bool _colFlip; // The bool used to flip the colour
-        private int _selectedItem;
-        private List<MenuOption> _options;
+        private int _selectedItem; // The currently selected item
+        private List<MenuOption> _options; // The list of menu options
 
         public MenuPortrait()
         {
@@ -31,6 +32,7 @@ namespace BlockBreaker.MainMenu
         {
             base.SelectThisPortrait();
             _colTimer.Start(); // Start the timer when this portrait is selected
+            ResourceManager.GameWon = false;
         }
 
         public override void DeSelectThisPortrait()
@@ -57,6 +59,7 @@ namespace BlockBreaker.MainMenu
             var optionTitles = new[] // The different options availible
             {
                 "Play Game",
+                "Instructions",
                 "Options",
                 "Highscores",
                 "Exit"
@@ -100,24 +103,28 @@ namespace BlockBreaker.MainMenu
             _options[_selectedItem].Select(); // Set the selected flag for the new selected item
         }
 
-        private void SelectOption(Renderables.MenuOption.OptionName selectedOption) // Switch the 
+        private void SelectOption(OptionName selectedOption) // Switch the 
         {
             switch (selectedOption) // Switch on the selected options
             {
-                case Renderables.MenuOption.OptionName.Exit: // If Exit
+                case OptionName.Exit: // If Exit
                     Environment.Exit(0); // Then exit
                     break;
 
-                case Renderables.MenuOption.OptionName.Highscores: // If highscores
+                case OptionName.Highscores: // If highscores
                     _manager.SwitchCurrentPortrait((int)PageHandles.Highscores); // Switch to highscores portrait
                     break;
 
-                case Renderables.MenuOption.OptionName.Options: // If options
+                case OptionName.Options: // If options
                     _manager.SwitchCurrentPortrait((int)PageHandles.Options); // Switch to options portrait
                     break;
 
-                case Renderables.MenuOption.OptionName.Play: // If play
+                case OptionName.Play: // If play
                     _manager.SwitchCurrentPortrait((int)PageHandles.GiveName); // Switch to the give user name portrait
+                    break;
+
+                case OptionName.Instructions:
+                    _manager.SwitchCurrentPortrait((int)PageHandles.Instructions);
                     break;
             }
         }
@@ -127,7 +134,7 @@ namespace BlockBreaker.MainMenu
         /// </summary>
         public void CreateColTimer()
         {
-            _colTimer = new System.Timers.Timer(2000); // Timer every 2 seconds
+            _colTimer = new Timer(2000); // Timer every 2 seconds
             _colTimer.AutoReset = true; // Keeps going
             _colTimer.Enabled = true; // Make it publish events
             _colTimer.Elapsed += OnTimedEvent; // subscribe the event

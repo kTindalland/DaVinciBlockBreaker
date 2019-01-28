@@ -35,6 +35,19 @@ namespace DaVinci_Framework.Renderer.Resources
         }
 
         /// <summary>
+        /// Completely clear the register
+        /// </summary>
+        public void UnRegisterAllItems()
+        {
+            foreach (var item in _renderables)
+            {
+                UnregisterItem(item);
+            }
+
+            //_renderables = new List<Renderable>();
+        }
+
+        /// <summary>
         /// Un-register an item from the instance
         /// </summary>
         /// <param name="item">The item to be un-registered</param>

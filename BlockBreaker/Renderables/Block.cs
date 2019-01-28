@@ -12,10 +12,10 @@ namespace BlockBreaker.Renderables
 {
     public class Block : Renderable
     {
-        private ConsoleColor[] _difficultyColours; // The different colours of the difficulties
-        private int _difficulty; // How many hits it takes to break this block
+        protected ConsoleColor[] _difficultyColours; // The different colours of the difficulties
+        protected int _difficulty; // How many hits it takes to break this block
         private int _scoreWorth; // How much score this block is worth to break
-        private int[] _dimensions; // The dimensions of the block (width, height)
+        protected int[] _dimensions; // The dimensions of the block (width, height)
         private bool _canBeHit; // To delay hits
 
         public Block(int difficulty, double[] initialPosition, int[] dimensions) : base(initialPosition)
@@ -62,9 +62,9 @@ namespace BlockBreaker.Renderables
         /// <summary>
         /// When the block has been hit the required amount of times, this method is called
         /// </summary>
-        public void Break()
+        public virtual void Break()
         {
-            var args = new ScoreEventArgs() { Score = _scoreWorth }; // Tell the subscriber how many points this block was worth
+            var args = new ScoreEventArgs() { Score = _scoreWorth * ResourceManager.PointMultiplier }; // Tell the subscriber how many points this block was worth
             OnBlockBroken(args); // Publish event
         }
 

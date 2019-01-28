@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using BlockBreaker.Game.Resources;
@@ -22,6 +23,7 @@ namespace BlockBreaker.Game
         private Ball _ball;
         private Text _topWall; // The top wall
         private Text _bottomWall; // The bottom wall
+        private Text _scoreMultLabel; // Shows what the current score multiplier is
 
         public GamePortrait()
         {
@@ -36,6 +38,10 @@ namespace BlockBreaker.Game
             _nameAndScore = new Text("Temp", ConsoleColor.Cyan, new double[] { 0, 0 });
             _register.RegisterItem(_nameAndScore);
 
+            // Score Multiplier
+            _scoreMultLabel = new Text("Current Score Multiplier : " + ResourceManager.PointMultiplier, ConsoleColor.Cyan, new double[] {0, 1});
+            _register.RegisterItem(_scoreMultLabel);
+
             // Top and bottom walls
             var wallString = new string('#', 50);
             var topPad = 3; var bottomPad = 3;
@@ -47,16 +53,16 @@ namespace BlockBreaker.Game
             _register.RegisterItem(_bottomWall);
 
             // Ball
-            _ball = new Ball('@', ConsoleColor.White, new double[] { (Console.WindowWidth / 2), (Console.WindowHeight - 6) },
-                new Vector(0.5, 1.0));
-            _ball.ChangeMultiplier(0.5f); // Half the speed
+            _ball = new Ball('@', ConsoleColor.White, new double[] { (Console.WindowWidth / 2), (Console.WindowHeight - 8) },
+                new Vector(0.25, 0.5));
+            _ball.ChangeMultiplier(2.0f); // Half the speed
             _register.RegisterItem(_ball);
             _ball.BallMoved += OnBallMoved;
 
             // Paddle
             _paddle = new Paddle('=', ConsoleColor.White,
-                new double[] { (Console.WindowWidth / 2) - 3, (Console.WindowHeight - 5) });
-            _paddle.ChangeMultiplier(1.5f); // Change the paddles delta-time refresh rate
+                new double[] { (Console.WindowWidth / 2) - 3, (Console.WindowHeight - 7) });
+            _paddle.ChangeMultiplier(2.0f); // Change the paddles delta-time refresh rate
             _register.RegisterItem(_paddle);
             _ball.BallMoved += _paddle.OnBallMoved; // Set the paddle up for collision
             
@@ -67,15 +73,12 @@ namespace BlockBreaker.Game
             _blocks = new List<Block>(); // Create an empty list for the blocks
 
             // The game level, number corresponds to the difficulty of the block
-            var difficultyMap = new [,]
+            //var difficultyMap = new int[0, 0];
+            var difficultyMap = new[,]
             {
-                {2, 1, 0, 1, 2 },
-                {0, 2, 1, 2, 0 },
-                {1, 1, 2, 1, 1 },
-                {0, 2, 1, 2, 0 },
-                {2, 1, 0, 1, 2 },
+                {"0", "1", "2£", "1", "0" },
+                {"2", "1", "0", "1", "2" }
             };
-            
 
             Block tempBlock;
             var topPad = 4;
@@ -85,7 +88,17 @@ namespace BlockBreaker.Game
             {
                 for (var col = 0; col < difficultyMap.GetLength(1); col++) // Each column
                 {
-                    tempBlock = new Block(difficultyMap[line, col], new double[] { (col * 10), topPad + (line * 2) }, new[] { 10, 2 });
+                    var difficulty = int.Parse(difficultyMap[line, col][0].ToString());
+                    if (difficultyMap[line, col].Contains("£"))
+                    {
+                        tempBlock = new DoublePointsBlock(difficulty, new double[] { (col * 10), topPad + (line * 2) }, new[] { 10, 2 }, _scoreMultLabel);
+                    }
+                    else
+                    {
+                        tempBlock = new Block(difficulty, new double[] { (col * 10), topPad + (line * 2) }, new[] { 10, 2 });
+                    }
+
+                    
                     tempBlock.BlockBroken += OnBlockBroken; // Add the score tracking
                     _blocks.Add(tempBlock); // Add to the list of blocks
                     _register.RegisterItem(tempBlock); // Register the block to the register
@@ -97,6 +110,7 @@ namespace BlockBreaker.Game
         public override void SelectThisPortrait()
         {
             base.SelectThisPortrait();
+            ResourceManager.PointMultiplier = 1;
 
             FillRegister(); // Create the main elements
             FillBlocks(); // Create the blocks
