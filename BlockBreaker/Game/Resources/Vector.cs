@@ -2,8 +2,8 @@
 {
     public struct Vector
     {
-        public double XComponent { get; set; }
-        public double YComponent { get; set; }
+        public double XComponent { get; set; } // How far right it goes, negative is left
+        public double YComponent { get; set; } // How far down it goes, negative is up
 
         public Vector(double x, double y)
         {
@@ -11,7 +11,7 @@
             YComponent = y;
         }
 
-        public static Vector operator +(Vector a, Vector b)
+        public static Vector operator +(Vector a, Vector b) // Override the + operator
         {
             var finalX = a.XComponent + b.XComponent;
             var finalY = a.YComponent + b.YComponent;

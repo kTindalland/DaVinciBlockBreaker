@@ -51,7 +51,6 @@
     <Compile Include="Game\GamePortrait.cs" />
     <Compile Include="Game\Resources\Vector.cs" />
     <Compile Include="Instructions\InstructionsPortrait.cs" />
-    <Compile Include="Instructions\Resources\Page.cs" />
     <Compile Include="Renderables\Ball.cs" />
     <Compile Include="Renderables\Block.cs" />
     <Compile Include="Renderables\DoublePointsBlock.cs" />

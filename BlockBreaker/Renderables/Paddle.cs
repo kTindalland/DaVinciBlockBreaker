@@ -2,11 +2,7 @@
 using BlockBreaker.Resources;
 using DaVinci_Framework.Renderer.Resources;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlockBreaker.Renderables
 {
@@ -26,9 +22,10 @@ namespace BlockBreaker.Renderables
 
         public override Pixel[,] ItemPixels(bool isBlank = false)
         {
-            var len = 6;
-            var pixels = new Pixel[len, 1];
+            var len = 6; // Length of paddle
+            var pixels = new Pixel[len, 1]; // Create the pixel array
 
+            // Fill in the pixels
             for (int i = 0; i < len; i++)
             {
                 if (!isBlank)
@@ -67,6 +64,11 @@ namespace BlockBreaker.Renderables
             }
         }
 
+        /// <summary>
+        /// Calls when the ball moves.
+        /// </summary>
+        /// <param name="source">The source of the event</param>
+        /// <param name="args">The arguments passed through</param>
         public void OnBallMoved(Ball source, BallMovedEventArgs args)
         {
             var ballPosition = args.Position;
@@ -78,7 +80,7 @@ namespace BlockBreaker.Renderables
                     if (ballPosition[1] >= _position[1] - 1.0 && ballPosition[1] <= _position[1] + 1.0)
                     {
                         _changed = true;
-                        var changeMap = new double[] { -0.4, -0.2, 0, 0, 0.2, 0.4 };
+                        var changeMap = new double[] { -0.4, -0.2, 0, 0, 0.2, 0.4 }; // How much the balls vector changes
 
                         var mapIndex = (int)Math.Floor(ballPosition[0] - _position[0]);
 
@@ -90,11 +92,12 @@ namespace BlockBreaker.Renderables
                         catch (IndexOutOfRangeException)
                         {
                             source.Direction = new Vector(source.Direction.XComponent, -source.Direction.YComponent);
-                            Debug.Print("Caught Exception : IndexOutOfRange in Paddle Collision");
+                            Debug.Print("Caught Exception : IndexOutOfRange in Paddle Collision"); // Log the error
                         }
 
-                        _canColide = false;
+                        _canColide = false; // Cannot collide
 
+                        // Set a timer for the collision to reactivate after 0.2 seconds
                         var collideTimer = new System.Timers.Timer(200) {Enabled = true};
                         collideTimer.Elapsed += OnTimedEvent;
                         collideTimer.Start();
@@ -104,8 +107,14 @@ namespace BlockBreaker.Renderables
             
         }
 
+        /// <summary>
+        /// When the timer has elapsed.
+        /// </summary>
+        /// <param name="source">The timer</param>
+        /// <param name="args">The arguments passed through</param>
         public void OnTimedEvent(object source, EventArgs args)
         {
+            // Enable collision
             _canColide = true;
         }
     }

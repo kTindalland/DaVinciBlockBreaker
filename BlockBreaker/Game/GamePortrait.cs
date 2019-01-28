@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using BlockBreaker.Game.Resources;
 using BlockBreaker.Highscores.Resources;
 using BlockBreaker.Renderables;
@@ -127,6 +123,7 @@ namespace BlockBreaker.Game
             _paddle.MoveAbsolute((Console.WindowWidth / 2) - 3);
         }
 
+        // Called when the ball moves
         public void OnBallMoved(Ball source, BallMovedEventArgs args)
         {
             var ballPosition = args.Position;
@@ -134,14 +131,15 @@ namespace BlockBreaker.Game
             if (ballPosition[1] <= _topWall.StartingLocation()[1])
             {
                 ResourceManager.GameWon = true; // Game won
-                _manager.SwitchCurrentPortrait((int)PageHandles.EndGame);
+                _manager.SwitchCurrentPortrait((int)PageHandles.EndGame); // Switch to the endgane
             }
             else if (ballPosition[1] >= _bottomWall.StartingLocation()[1])
             {
-                _manager.SwitchCurrentPortrait((int)PageHandles.EndGame);
+                _manager.SwitchCurrentPortrait((int)PageHandles.EndGame); // Switch to the endgame
             }
         }
 
+        // When a block breaks
         public void OnBlockBroken(Block source, ScoreEventArgs args)
         {
             // Update the score
@@ -159,6 +157,7 @@ namespace BlockBreaker.Game
             _ball.BallMoved -= source.OnBallMoved;
         }
 
+        // When a key is pressed
         public void OnKeyPress(object source, KeyEventArgs args)
         {
             if (_active)
@@ -166,15 +165,15 @@ namespace BlockBreaker.Game
                 switch (args.KeyPressed)
                 {
                     case ConsoleKey.Escape:
-                        _manager.SwitchCurrentPortrait((int)PageHandles.MainMenu);
+                        _manager.SwitchCurrentPortrait((int)PageHandles.MainMenu); // When escape, switch to the main menu
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        _paddle.MoveRelativeXaxis(-1);
+                        _paddle.MoveRelativeXaxis(-1); // Move paddle left
                         break;
 
                     case ConsoleKey.RightArrow:
-                        _paddle.MoveRelativeXaxis(1);
+                        _paddle.MoveRelativeXaxis(1); // Move paddle right
                         break;
                 }
             }
